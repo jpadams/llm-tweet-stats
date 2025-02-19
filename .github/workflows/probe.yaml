@@ -27,7 +27,7 @@ jobs:
       - name: Get number of impressions and append to csv
         run: |
           DATA=$(curl -X GET "https://api.twitter.com/2/tweets?ids=1891205257516003344&tweet.fields=public_metrics" -H "Authorization: Bearer $TOKEN")
-          COUNT=$(echo "$DATA" | jq '.data.[].public_metrics.impression_count') 
+          COUNT=$(echo "$DATA" | tr -d '\000-\037' | jq '.data.[].public_metrics.impression_count') 
           DATETIME=$(date)
           echo "$DATETIME,$COUNT" >> data.csv
         env:
