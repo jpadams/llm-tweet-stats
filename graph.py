@@ -3,9 +3,6 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import math
 
-# Set font to Noto Color Emoji for emoji support
-plt.rcParams['font.family'] = 'DejaVu Sans'
-
 # Load your CSV data
 data = pd.read_csv('data.csv', parse_dates=['date'])
 
@@ -39,7 +36,7 @@ y_coord = max(data['impressions']) * 0.8  # Adjust y-coordinate as needed
 plt.text(x_coord, y_coord, str(most_recent_value), fontsize=20, ha='center')
 
 # Additional formatting (optional)
-plt.title('\U0001F9E0 \U0001F433 Impressions')
+plt.title('Impressions')
 plt.xlabel('Date')
 plt.ylabel('Impressions')
 
