@@ -1,0 +1,50 @@
+name: Get Num Mods
+
+# Controls when the workflow will run
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '0 * * * *'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: write  # This grants write access to the repository
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Noto Color Emoji font
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-color-emoji
+      
+      - name: Get number of impressions and append to csv
+        run: |
+          DATA=$(curl -X GET "https://api.twitter.com/2/tweets?ids=1891205257516003344&tweet.fields=public_metrics" -H "Authorization: Bearer $TOKEN")
+          COUNT=$(echo "$DATA" | jq '.data.[].public_metrics.impression_count') 
+          DATETIME=$(date)
+          echo "$DATETIME,$COUNT" >> data.csv
+        env:
+          TOKEN: ${{ secrets.TOK }}
+
+      - name: Install Dependencies
+        run: |
+          pip install pandas matplotlib
+
+      - name: Run Graph Script
+        run: |
+          python graph.py
+
+      - name: Commit and push data.csv and graph.png
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data.csv graph.png
+          git commit -m "Update num impressions" || echo "No changes to commit"
+          git push
