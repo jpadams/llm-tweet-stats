@@ -22,7 +22,12 @@ jobs:
       - name: Get number of impressions and append to csv
         run: |
           DATA=$(curl -X GET "https://api.twitter.com/2/tweets?ids=1891205257516003344&tweet.fields=public_metrics" -H "Authorization: Bearer $TOKEN")
-          echo "$DATA"
+          echo "API Response: $DATA"
+        
+          if [[ -z "$DATA" || "$DATA" == *"error"* ]]; then
+            echo "Error: Failed to fetch data from Twitter API" >&2
+            exit 1
+          fi
           COUNT=$(echo "$DATA" | tr -d '\000-\037' | jq '.data.[].public_metrics.impression_count')
           DATETIME=$(date)
           echo "$DATETIME,$COUNT" >> data.csv
