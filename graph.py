@@ -39,7 +39,7 @@ y_coord = max(data['impressions']) * 0.8  # Adjust y-coordinate as needed
 plt.text(x_coord, y_coord, str(most_recent_value), fontsize=20, ha='center')
 
 # Additional formatting (optional)
-plt.title('🧠🐳 Impressions')
+plt.title('\U0001F9E0 \U0001F433 Impressions')
 plt.xlabel('Date')
 plt.ylabel('Impressions')
 
