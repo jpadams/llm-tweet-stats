@@ -19,11 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install Noto Color Emoji font
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y fonts-noto-color-emoji
-      
       - name: Get number of impressions and append to csv
         run: |
           DATA=$(curl -X GET "https://api.twitter.com/2/tweets?ids=1891205257516003344&tweet.fields=public_metrics" -H "Authorization: Bearer $TOKEN")

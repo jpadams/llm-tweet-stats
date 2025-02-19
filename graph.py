@@ -1,12 +1,10 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-import matplotlib.font_manager as fm
 import math
 
-# Load Noto Color Emoji font explicitly
-emoji_font_path = "/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf"
-emoji_font = fm.FontProperties(fname=emoji_font_path)
+# Set font to Noto Color Emoji for emoji support
+plt.rcParams['font.family'] = 'DejaVu Sans'
 
 # Load your CSV data
 data = pd.read_csv('data.csv', parse_dates=['date'])
@@ -37,11 +35,11 @@ most_recent_value = data['impressions'].iloc[-1]
 x_coord = data.index[-1]  # Get the last date from the index
 y_coord = max(data['impressions']) * 0.8  # Adjust y-coordinate as needed
 
-# Display the most recent value in the graph with emoji font
-plt.text(x_coord, y_coord, str(most_recent_value), fontsize=20, ha='center', fontproperties=emoji_font)
+# Display the most recent value in the graph
+plt.text(x_coord, y_coord, str(most_recent_value), fontsize=20, ha='center')
 
 # Additional formatting (optional)
-plt.title("🧠🐳 Impressions", fontproperties=emoji_font)
+plt.title('\U0001F9E0 \U0001F433 Impressions')
 plt.xlabel('Date')
 plt.ylabel('Impressions')
 
