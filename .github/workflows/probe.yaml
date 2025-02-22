@@ -36,7 +36,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install pandas matplotlib
+          pip install pandas matplotlib numpy
 
       - name: Run Graph Script
         run: |
