@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import math
+import numpy as np
 
 # Load your CSV data
 data = pd.read_csv('data.csv', parse_dates=['date'])
@@ -12,9 +13,26 @@ data.sort_values('date', inplace=True)
 # Set the date column as the index
 data.set_index('date', inplace=True)
 
+# Calculate the first and second derivatives
+data['first_derivative'] = np.gradient(data['impressions'])
+data['second_derivative'] = np.gradient(data['first_derivative'])
+
+# Find positive inflection points (where the second derivative changes from negative to positive)
+positive_inflection_points = data[
+    (data['second_derivative'] > 0) & 
+    (data['second_derivative'].shift(1) <= 0)
+]
+
 # Plotting the data
 plt.figure(figsize=(10, 5))
-plt.plot(data.index, data['impressions'])
+plt.plot(data.index, data['impressions'], label='Impressions')
+
+# Mark positive inflection points on the graph
+plt.scatter(positive_inflection_points.index, positive_inflection_points['impressions'], color='red', zorder=5, label='Positive Inflection Points')
+
+# Add datetime labels to the inflection points
+for date, impressions in positive_inflection_points['impressions'].items():
+    plt.text(date, impressions, date.strftime('%Y-%m-%d'), fontsize=10, ha='right', color='red')
 
 # Calculate interval for 10 evenly-spaced date labels in date range
 date_range = (data.index.max() - data.index.min()).days
@@ -36,8 +54,9 @@ y_coord = max(data['impressions']) * 0.8  # Adjust y-coordinate as needed
 plt.text(x_coord, y_coord, str(most_recent_value), fontsize=20, ha='center')
 
 # Additional formatting (optional)
-plt.title('Impressions')
+plt.title('Impressions with Positive Inflection Points')
 plt.xlabel('Date')
 plt.ylabel('Impressions')
+plt.legend()
 
 plt.savefig('graph.png')
