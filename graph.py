@@ -54,7 +54,7 @@ plt.plot(data.index, data['impressions'], color='#DAA520', label='Impressions')
 
 # Mark burst markers in red with an "X"
 plt.scatter(burst_marker_dates, burst_marker_impressions,
-            color='red', marker='x', s=100, zorder=3, label='Sharp Increase (prev pt)')
+            color='red', marker='x', s=100, zorder=3, label='Sharp Increase)')
 
 # Annotate each burst marker with its datetime
 for dt in burst_marker_dates:
