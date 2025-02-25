@@ -73,12 +73,18 @@ plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d %H:%M'))
 plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=interval))
 plt.gcf().autofmt_xdate()
 
-plt.title('Impressions: Sharp Increases')
+plt.title('Impressions with Sharp Increase in Slope')
 plt.xlabel('Date')
 plt.ylabel('Impressions')
 plt.legend()
 plt.grid(True, linestyle='--', color='lightgray')
 plt.tight_layout()
+
+# Optionally annotate the most recent value
+most_recent_value = data['impressions'].iloc[-1]
+x_coord = data.index[-1]
+y_coord = max(data['impressions']) * 0.8
+plt.text(x_coord, y_coord, str(most_recent_value), fontsize=20, ha='center')
 
 # Save and display the figure
 plt.savefig('graph.png')
