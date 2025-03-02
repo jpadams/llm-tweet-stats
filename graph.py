@@ -27,7 +27,7 @@ data['slope'] = data['impressions'].diff() / time_diff
 data['slope_diff'] = data['slope'].diff()
 
 # Set a threshold for a "sharp" increase in slope (here, 7 impressions/minute)
-slope_threshold = 7
+slope_threshold = 10
 bursts = data[data['slope_diff'] > slope_threshold]
 
 # ============================
