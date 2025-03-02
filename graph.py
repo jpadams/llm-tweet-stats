@@ -26,8 +26,8 @@ data['slope'] = data['impressions'].diff() / time_diff
 # This shows how much the slope changes between consecutive intervals
 data['slope_diff'] = data['slope'].diff()
 
-# Set a threshold for a "sharp" increase in slope (here, 7 impressions/minute)
-slope_threshold = 10
+# Set a threshold for a "sharp" increase in slope (here, 60 impressions/minute aka avg 1/sec)
+slope_threshold = 60
 bursts = data[data['slope_diff'] > slope_threshold]
 
 # ============================
@@ -82,8 +82,17 @@ plt.tight_layout()
 
 # Optionally annotate the most recent value
 most_recent_value = data['impressions'].iloc[-1]
-x_coord = data.index[-1]
-y_coord = max(data['impressions']) * 0.8
+# Get the x and y-axis limits from the plot
+x_min, x_max = plt.gca().get_xlim()
+y_min, y_max = plt.gca().get_ylim()
+
+# Position the text in the middle horizontally
+x_coord = x_max - (x_max - x_min) * 0.5
+# Position the text in the top 1/3 of the canvas
+y_coord = y_max - (y_max - y_min) * 0.25  # Adjust this factor if needed
+
+#x_coord = data.index[-1]
+#y_coord = max(data['impressions']) * 0.8
 plt.text(x_coord, y_coord, str(most_recent_value), fontsize=20, ha='center')
 
 # Save and display the figure
